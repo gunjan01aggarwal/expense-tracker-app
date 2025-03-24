@@ -1,0 +1,8 @@
+<td>
+    <form method="post" action="{% url 'money_manager:handle_action' expense.id %}">
+        {% csrf_token %}
+        <button type="submit" name="action" value="view" class="btn btn-info btn-sm">View</button>
+        <button type="submit" name="action" value="edit" class="btn btn-warning btn-sm">Edit</button>
+        <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+</td>
