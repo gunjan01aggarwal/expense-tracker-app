@@ -29,8 +29,3 @@ Built with **Django** and **Bootstrap**, it provides insights on spending habits
 - **Frontend**: Bootstrap, HTML, CSS ,JS,Chart.js
 - **Version Control**: Git & GitHub  
 
-## 🛠 Installation & Usage  
-1️⃣ Clone this repository  
-```bash
-git clone https://github.com/gunjan01aggarwal/expense-tracker-app.git
-cd expense-tracker-app
