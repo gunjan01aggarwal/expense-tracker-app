@@ -121,10 +121,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = 'static/'
+"""STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR , 'static')]
+"""
+# URL for serving static files
+STATIC_URL = "static/"
 
+# Directory where collected static files will be stored
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Include static directories from multiple apps
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "money_manager/static"),
+    os.path.join(BASE_DIR, "user/static"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
