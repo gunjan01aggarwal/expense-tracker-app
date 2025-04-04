@@ -133,8 +133,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Include static directories from multiple apps
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "money_manager/static"),
-    os.path.join(BASE_DIR, "user/static"),
+    os.path.join(BASE_DIR, "money_manager/static")   
 ]
 
 # Default primary key field type
