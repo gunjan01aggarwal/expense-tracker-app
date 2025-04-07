@@ -14,28 +14,31 @@ from Users.models import User,Profile
 
 # Create your views here.
 def index(request):
-    expenses=Expense.objects.order_by('-id')
-    description=request.GET.get('description')
-    data=Expense.objects.all()
-    #search by using description
-    if description:
-        expenses=data.filter(description__icontains=description)
-    #pagination
-    item_per_page=5
-    paginator=Paginator(data,item_per_page)
-    page=request.GET.get('page')
-    expenses=paginator.get_page(page)   
-    #calculate serial number
-    #page_obj contains all objects on the basis of item_per_page
-    #page_obj.number gives the current page number    
-    start_serial_number=(expenses.number-1)*item_per_page 
-    # Add serial number to each expense
-    for index, expense in enumerate(expenses, start=1):
-        expense.serial_number = start_serial_number + index  # Assign serial number manually
+    description = request.GET.get('description')
 
-    """if date:
-        expenses=data.filter(date__icontains=date) """   
-    return render(request, "Money_Manager/index.html",{'expenses':expenses})
+    # Always start with the ordered queryset
+    data = Expense.objects.order_by('-id')
+
+    # Apply filtering if search query is given
+    if description:
+        data = data.filter(description__icontains=description)
+
+    # Pagination
+    item_per_page = 5
+    paginator = Paginator(data, item_per_page)
+    page = request.GET.get('page')
+    expenses = paginator.get_page(page)
+
+    # Serial number logic
+    start_serial_number = (expenses.number - 1) * item_per_page
+    for index, expense in enumerate(expenses, start=1):
+        expense.serial_number = start_serial_number + index
+
+    return render(request, "Money_Manager/index.html", {
+        'expenses': expenses,
+        'description': description  # Pass search value back to the template
+    })
+
 
 def analysis(request):
     return render(request, "Money_Manager/analysis.html")
