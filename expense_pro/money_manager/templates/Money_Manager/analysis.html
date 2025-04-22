@@ -42,12 +42,7 @@
                     <div class="card-body">
                         <canvas id="myChart1" width="800" height="800" ></canvas>
                     </div>
-                    <script>
-                        const chartData1 = {
-                                            labels1: {{ labels1|safe }},
-                                            values1: {{ values1|safe }}
-                                        };
-                    </script>
+                    {{ chartdata1|json_script:"chartdata1" }}
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="{% static 'Money_Manager/js_files/chart1.js' %}"></script>
                 </div>    
@@ -59,12 +54,7 @@
                     <div class="card-body">
                         <canvas id="myChart2" width="800" height="400" ></canvas>
                     </div>
-                    <script>
-                        const chartData2 = {
-                                            labels2: {{ labels2|safe }},
-                                            values2: {{ values2|safe }}
-                                        };
-                    </script>
+                    {{ chartdata2|json_script:"chartdata2" }}
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="{% static 'Money_Manager/js_files/chart2.js' %}"></script>
                 </div>
@@ -78,12 +68,7 @@
                     <div class="card-body">
                         <canvas id="myChart3" width="800" height="400" ></canvas>
                     </div>
-                    <script>
-                        const chartData3 = {
-                                            labels3: {{ labels3|safe }},
-                                            values3: {{ values3|safe }}
-                                        };
-                    </script>
+                    {{ chartdata3|json_script:"chartdata3" }}
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="{% static 'Money_Manager/js_files/chart3.js' %}"></script>
                 </div>    

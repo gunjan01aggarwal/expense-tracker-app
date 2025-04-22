@@ -11,17 +11,21 @@ from datetime import datetime,timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
 from Users.models import User,Profile
+from django.contrib.auth.decorators import login_required
+import json
 
 # Create your views here.
 def index(request):
+
+    # Filter only current user's expenses
+    data = Expense.objects.filter(user=request.user).order_by('-id')
+
     description = request.GET.get('description')
-
-    # Always start with the ordered queryset
-    data = Expense.objects.order_by('-id')
-
-    # Apply filtering if search query is given
     if description:
         data = data.filter(description__icontains=description)
+
+    if not data.exists():
+        messages.success(request, "You have no expenses yet.")
 
     # Pagination
     item_per_page = 5
@@ -36,8 +40,9 @@ def index(request):
 
     return render(request, "Money_Manager/index.html", {
         'expenses': expenses,
-        'description': description  # Pass search value back to the template
+        'description': description  # Keep the search value in the form
     })
+
 
 
 def analysis(request):
@@ -62,7 +67,8 @@ def add(request):
                 category=category,
                 date=date,
                 description=description,
-                amount=amount
+                amount=amount,
+                user=request.user
             )
             Exp_info.save()
 
@@ -77,7 +83,7 @@ def add(request):
 
     return render(request, "Money_Manager/createform.html")
 
-
+@login_required
 def view(request,exp_id):
     if request.method == "POST":
         expense_ = Expense.objects.get(id=exp_id)
@@ -90,6 +96,7 @@ def view(request,exp_id):
         form = Expenseform(instance=expense_)
     return render(request,'Money_Manager/viewform.html',{'form':form,'expense_':expense_})
 
+@login_required
 def edit(request, exp_id):
     expense_ = get_object_or_404(Expense, id=exp_id)
 
@@ -107,7 +114,7 @@ def edit(request, exp_id):
 
     return render(request, 'Money_Manager/editform.html', {"form": form, "expense_": expense_})
 
-
+@login_required
 def delete(request,exp_id):
     expense_ = get_object_or_404(Expense, id=exp_id) 
     if request.method == 'POST':
@@ -116,6 +123,8 @@ def delete(request,exp_id):
        return redirect("money_manager:index")
     return render(request,'Money_Manager/deleteform.html',{'expense_':expense_})
 
+
+@login_required
 def handle_action(request, exp_id):
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -148,8 +157,8 @@ def handle_action(request, exp_id):
     today_expenses=float(today_expenses)
     return today_expenses
 """
-def daily():
-    data=Expense.objects.all().values()
+def daily(user):
+    data=Expense.objects.filter(user=user).values()
     daily_exp=0
     today_date=datetime.today().strftime('%Y-%m-%d')    
     for i in range(len(data)):
@@ -160,8 +169,8 @@ def daily():
     return daily_exp
 
 # Calculate yesterday expenses
-def yesterday():
-    data=Expense.objects.all().values()
+def yesterday(user):
+    data=Expense.objects.filter(user=user).values()
     yesterday_expenses=0
     # Get yesterday's date in YYYY-MM-DD format (IST timezone aware)
     yesterday_date=(datetime.today()-timedelta(days=1)).strftime('%Y-%m-%d')
@@ -174,8 +183,8 @@ def yesterday():
     return yesterday_expenses        
 
 #Calculate weekly expenses
-def weekly():
-    data=Expense.objects.all().values()
+def weekly(user):
+    data=Expense.objects.filter(user=user).values()
     weekly_expenses=0
     # Get today's date in YYYY-MM-DD format (IST timezone aware)
     today_date=datetime.today().strftime('%Y-%m-%d')
@@ -190,8 +199,8 @@ def weekly():
     return weekly_expenses          
 
 #Calculate monthly expenses
-def monthly():
-    data=Expense.objects.all().values()
+def monthly(user):
+    data=Expense.objects.filter(user=user).values()
     monthly_expenses={'January':0,'February':0,'March':0,'April':0,
                       'May':0,'June':0,'July':0,'August':0,'September':0,
                       'October':0,'November':0,'December':0}
@@ -207,36 +216,54 @@ def monthly():
                 monthly_expenses[key]+=data[i]['amount']
     print(monthly_expenses)
     monthly_expenses={key:float(value) for key,value in monthly_expenses.items()}   
-    return monthly_expenses         
+    return monthly_expenses       
+
+
+
 def chart_view(request):
-    #for chart1
-    #Aggregrate count of occurence of each category.
-    category_counts=Expense.objects.values('category').annotate(total=Count('category'))    
-    labels1=[item['category'] for item in category_counts]
-    values1=[item['total'] for item in category_counts]
-    #for chart2
-    #Calculate sum of amount for each category.
-    category_sum=Expense.objects.values('category').annotate(total_sum=Sum('amount'))
-    labels2=[item['category'] for item in category_sum]
-    values2=[float(item['total_sum']) for item in category_sum]
-    #for chart3
-    daily_exp=daily()
-    #for chart4
-    yesterday_exp=yesterday()
-    #for chart5
-    weekly_exp=weekly()
-    #for chart6
-    monthly_exp=monthly()
-    labels3=[key for key in monthly_exp.keys()]
-    values3=[value for value in monthly_exp.values()] 
-    return render(request,'Money_Manager/analysis.html',{'labels1':labels1,
-                                                         'values1':values1,
-                                                         'labels2':labels2,'values2':values2
-                                                         ,'daily_exp':daily_exp,
-                                                         'yesterday_exp':yesterday_exp,
-                                                         'weekly_exp':weekly_exp,
-                                                        'labels3':labels3,'values3':values3
-                                                         })
+    # Filter only current user's expenses
+    user_expenses = Expense.objects.filter(user=request.user)
+    
+    if user_expenses.exists():
+        # Chart 1: Category count
+        category_counts = user_expenses.values('category').annotate(total=Count('category'))
+        labels1 = [item['category'] for item in category_counts]
+        values1 = [item['total'] for item in category_counts]
+
+        # Chart 2: Sum per category
+        category_sum = user_expenses.values('category').annotate(total_sum=Sum('amount'))
+        labels2 = [item['category'] for item in category_sum]
+        values2 = [float(item['total_sum']) for item in category_sum]
+
+        # Time-based summaries (assuming they take user)
+        daily_exp = daily(request.user)
+        yesterday_exp = yesterday(request.user)
+        weekly_exp = weekly(request.user)
+        monthly_exp = monthly(request.user)
+        labels3 = list(monthly_exp.keys())
+        values3 = list(monthly_exp.values())
+    else:
+        labels1 = values1 = labels2 = values2 = labels3 = values3 = []
+        daily_exp = yesterday_exp = weekly_exp = 0
+
+   
+   
+    context={
+       
+    'chartdata1':{'labels1':labels1,'values1':values1 },
+    'chartdata2':{'labels2':labels2,'values2':values2},
+    'chartdata3':{'labels3':labels3,'values3':values3},
+    'daily_exp': daily_exp,
+    'yesterday_exp': yesterday_exp,
+    'weekly_exp': weekly_exp 
+
+    }
+   
+    
+    return render(request, 'Money_Manager/analysis.html',context)
+
+
+
 #Current Month Analysis
 """def cma(request):
     current_month=datetime.today().strftime('%m')

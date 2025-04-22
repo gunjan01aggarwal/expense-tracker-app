@@ -1,28 +1,103 @@
 //for chart1 
 
 // Get canvas element
-const canvas = document.getElementById('myChart1');
 
-if (canvas) {
-    // Get the context
-    const ctx1 = canvas.getContext('2d');
+// Get the data injected from Django safely
+document.addEventListener("DOMContentLoaded", function () {
 
-    new Chart(ctx1, {  // Use Chart instead of CharacterData
-        type: 'line',
-        data: {          
-            labels: chartData1.labels1,
-            datasets: [{
-                label: "category",
-                data: chartData1.values1,
-                fill: false,
-                borderColor: '#8A2BE2',
-                tension: 0.1
-            }]
+        const chartdata1 = JSON.parse(document.getElementById('chartdata1').textContent);
+
+        if (chartdata1.labels1.length === 0 || chartdata1.values1.length === 0) {
+            const canvasContainer = document.getElementById('myChart1');
+            canvasContainer.outerHTML = '<p style="text-align:center; color: gray;">No data to display</p>';
+        } else {
+            const canvas = document.getElementById('myChart1');
+
+            const ctx1 = canvas.getContext('2d');
+
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: chartdata1.labels1,
+                    datasets: [{
+                        label: "Category",
+                        data: chartdata1.values1,
+                        fill: false,
+                        borderColor: '#8A2BE2',
+                        tension: 0.1
+                    }]
+                }
+            });
         }
-    });
+    });   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+if (chartdata1.labels1.length === 0 || chartdata1.values1.length === 0) {
+    document.getElementById('myChart1').innerHTML = '<p style="text-align:center; color: gray;">No data to display</p>';
 } else {
-    console.error("Canvas element with id 'myChart1' not found.");
-}
+    const canvas = document.getElementById('myChart1');
+
+    if (canvas) {
+        // Get the context
+        const ctx1 = canvas.getContext('2d');
+
+        new Chart(ctx1, {  // Use Chart instead of CharacterData
+            type: 'line',
+            data: {          
+                labels: chartdata1.labels1,
+                datasets: [{
+                    label: "category",
+                    data: chartdata1.values1,
+                    fill: false,
+                    borderColor: '#8A2BE2',
+                    tension: 0.1
+                }]
+            }
+        });
+    } else {
+        console.error("Canvas element with id 'myChart1' not found.");
+    }
+};*/
 
 /*new Chart(ctx1, {
     type: 'bar',
