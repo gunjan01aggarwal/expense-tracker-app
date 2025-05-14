@@ -29,13 +29,23 @@
             <hr>
 
             <!-- Display error/success messages -->
-            {% if messages %}
+            <!--{% if messages %}
             <div class="alert alert-primary" role="alert">
                 {% for message in messages %}
-                {{ message }}
+                    {{ message }}
                 {% endfor %}
             </div>
+            {% endif %}-->
+
+           {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                    </div>
+                {% endfor %}
             {% endif %}
+
+
 
             <!-- Username input field -->
             <div class="form-group">

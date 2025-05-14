@@ -28,7 +28,7 @@ def login_page(request):
         
         if user is None:
             # Display an error message if authentication fails (invalid password)
-            messages.error(request, "Invalid Password")
+            messages.error(request, "Invalid Password or Username")
             return redirect('/login/')
         else:
             # Log in the user and redirect to the home page upon successful login

@@ -30,12 +30,13 @@
 
             <!-- Display error/success messages -->
             {% if messages %}
-            <div class="alert alert-primary" role="alert">
+            <ul class="messages">
                 {% for message in messages %}
-                {{ message }}
+                <li class="{{ message.tags }}">{{ message }}</li>
                 {% endfor %}
-            </div>
+            </ul>
             {% endif %}
+
 
             <!-- First Name input field -->
             <div class="form-group">

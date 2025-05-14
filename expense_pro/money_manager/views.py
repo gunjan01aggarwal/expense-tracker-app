@@ -20,7 +20,7 @@ def index(request):
     # Filter only current user's expenses
     data = Expense.objects.filter(user=request.user).order_by('-id')
 
-    description = request.GET.get('description')
+    description = request.GET.get('description','')
     if description:
         data = data.filter(description__icontains=description)
 
