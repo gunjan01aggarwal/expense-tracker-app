@@ -87,8 +87,8 @@ def about(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.success(request, "Logged out successfully!")
-    return redirect('login')
+    messages.success(request, "You have been logged out successfully!")
+    return redirect('login_page')
 
 @login_required
 def profile_page(request):

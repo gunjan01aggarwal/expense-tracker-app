@@ -50,6 +50,30 @@ body{
     .sidenav a:hover {
         color: greenyellow;
     }
+
+    .menu-button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    padding: 6px 8px 6px 16px;
+    color: white;
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    }
+
+    .menu-button:hover {
+    background-color: #3b1a89;
+    transform: scale(1.05);
+    color: greenyellow;
+    }
+
+    .menu-button:hover i {
+    color: greenyellow;
+    }
+
     .sidenav .bottom-text {
         position: absolute;
         bottom: 10px;
