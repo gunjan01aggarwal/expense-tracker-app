@@ -12,8 +12,9 @@ Its a end to end web application which tracks the expenses.It analyses the expen
 **Expense Tracker App** helps users **track income, expenses, and budget** in a simple and user-friendly interface.  
 Built with **Django** and **Bootstrap**, it provides insights on spending habits and helps users stay within their budget.  
 
-## 🎥 Demo  
-![Expense Tracker UI](https://your-image-url.com/demo.png)  
+## 🎥 Deployed on AWS using ec2 instance.
+[https://13.126.146.3/login]
+
 
 ## ✨ Features  
 ✔ Track income & expenses  
