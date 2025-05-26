@@ -13,7 +13,7 @@ Its a end to end web application which tracks the expenses.It analyses the expen
 Built with **Django** and **Bootstrap**, it provides insights on spending habits and helps users stay within their budget.  
 
 ## 🎥 Deployed on AWS using ec2 instance.
-https://13.126.146.3/login
+http://13.126.146.3/login
 
 
 ## ✨ Features  
