@@ -13,4 +13,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+    def is_complete(self):
+        return self.location and self.occupation and self.monthly_income
 

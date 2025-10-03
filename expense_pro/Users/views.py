@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth import logout
 from .forms import UserUpdateForm,ProfileUpdateForm
+from django.contrib.auth.views import LoginView
 #from django.contrib.auth.forms import PasswordChangeForm
 #from django.contrib.auth import update_session_auth_hash
 
@@ -15,7 +16,7 @@ def login_page(request):
     # Check if the HTTP request method is POST (form submission)
     if request.method == "POST":
         username = request.POST.get('username')
-        password = request.POST.get('password1')
+        password = request.POST.get('password')
         
         # Check if a user with the provided username exists
         if not User.objects.filter(username=username).exists():
@@ -26,7 +27,7 @@ def login_page(request):
         # Authenticate the user with the provided username and password
         user = authenticate(username=username, password=password)
         
-        if user is None:
+        """if user is None:
             # Display an error message if authentication fails (invalid password)
             messages.error(request, "Invalid Password or Username")
             return redirect('/login/')
@@ -34,10 +35,27 @@ def login_page(request):
             # Log in the user and redirect to the home page upon successful login
             login(request, user)
             messages.success(request, "Logged in successfully!")
+            return redirect('money_manager:index')"""
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Logged in successfully!")
+
+        
+            #  Ensure Profile exists
+            profile, created = Profile.objects.get_or_create(user=user)
+
+            #  Check if profile is complete
+            if not profile.is_complete():   # yeh method tum Profile model me bana sakti ho
+                return redirect('/complete-profile/')  # redirect to profile completion page
+
+            #  Agar profile complete hai to money_manager home page pe bhejo
             return redirect('money_manager:index')
+        else:
+            messages.error(request, "Invalid Username or Password")
+            return redirect('login_page')
     
-    # Render the login page template (GET request)
     return render(request, 'users/login.html')
+    
 
 # Define a view function for the registration page
 def register_page(request):
@@ -46,6 +64,7 @@ def register_page(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
+        email = request.POST.get('email')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         
@@ -61,7 +80,8 @@ def register_page(request):
         user = User.objects.create_user(
             first_name=first_name,
             last_name=last_name,
-            username=username
+            username=username,
+            email=email
         )
         
         # Set the user's password and save the user object
@@ -90,6 +110,8 @@ def logout_view(request):
     messages.success(request, "You have been logged out successfully!")
     return redirect('login_page')
 
+
+# update profile information
 @login_required
 def profile_page(request):
     user = request.user
@@ -121,3 +143,24 @@ def profile_page(request):
 
     return render(request, 'users/profile.html', {'user_form': user_form,
                                                    'profile_form': profile_form})
+
+
+# new user complete their profile infomation
+@login_required
+def complete_profile(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('money_manager:index')  # ab home/dashboard pe bhejo
+    else:
+        form = ProfileUpdateForm(instance=profile)
+
+    return render(request, 'users/complete_profile.html', {'form': form})
+
+
+# if user completed their profile information before, 
+# he doesn't fill again his information.he redirect on home page.
+

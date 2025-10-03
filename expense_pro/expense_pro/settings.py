@@ -140,7 +140,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL='money_manager:index'
+#LOGIN_REDIRECT_URL='money_manager:index'
+LOGIN_URL = '/login/'  # Login page ka URL
 LOGOUT_REDIRECT_URL = '/login/'  # Change to '/login/' if needed
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Directory where uploaded media is saved.

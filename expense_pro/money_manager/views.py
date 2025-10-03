@@ -10,7 +10,7 @@ from django.db.models import Count,Sum
 from datetime import datetime,timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
-from Users.models import User,Profile
+from Users.models import Profile
 from django.contrib.auth.decorators import login_required
 import json
 
@@ -219,6 +219,25 @@ def monthly(user):
     return monthly_expenses       
 
 
+#Current Month Analysis
+def cma(request):
+    
+    current_month=datetime.today().strftime('%B')
+    month_expenses=monthly(user=request.user)
+    current_month_expense=month_expenses[current_month]
+    Amt=Profile.objects.get(user=request.user).monthly_income
+    Amt=float(Amt)
+    Rem_Amt=Amt-current_month_expense
+
+    if current_month_expense < Amt:
+        return ("Great! You saved Rs."+ str(abs(Rem_Amt)),"green")
+    elif current_month_expense == Amt:
+        return ("You broke even this month. No savings, no loss.","yellow")
+    else:
+        return ("Alert! Your expenses exceeded income by Rs."+str(-Rem_Amt),"red")
+
+
+
 
 def chart_view(request):
     # Filter only current user's expenses
@@ -247,7 +266,7 @@ def chart_view(request):
         daily_exp = yesterday_exp = weekly_exp = 0
 
    
-   
+    cma_message,color=cma(request)
     context={
        
     'chartdata1':{'labels1':labels1,'values1':values1 },
@@ -255,8 +274,9 @@ def chart_view(request):
     'chartdata3':{'labels3':labels3,'values3':values3},
     'daily_exp': daily_exp,
     'yesterday_exp': yesterday_exp,
-    'weekly_exp': weekly_exp 
-
+    'weekly_exp': weekly_exp,
+    'message':cma_message,
+    'color':color
     }
    
     
@@ -264,21 +284,4 @@ def chart_view(request):
 
 
 
-#Current Month Analysis
-"""def cma(request):
-    current_month=datetime.today().strftime('%m')
-    month_expenses=monthly()
-    current_month_expense=month_expenses[current_month]
-    Amt=Profile.objects.get(user=request.user).monthly_income
-    Rem_Amt=Amt-current_month_expense
-
-    remaining_percent = (Rem_Amt / Amt) * 100  # Calculate remaining percentage
-
-    context = {
-        "Rem_Amt": Rem_Amt,
-        "Amt": Amt,
-        "remaining_percent": remaining_percent,  # Send percentage to template
-    }
-    return render(request, "Money_Manager/analysis.html", context)
-"""
 

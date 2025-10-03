@@ -21,7 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('exp/',include('money_manager.urls')),
     path('register/',user_views.register_page,name="register_page"),    
-    path('login/',authentication_views.LoginView.as_view(template_name='users/login.html'),name='login_page'),
+    path('login/', user_views.login_page, name='login_page'),
+    path('complete-profile/',user_views.complete_profile,name="complete_profile"),
     path('logout/',authentication_views.LogoutView.as_view(template_name='users/logout.html'),name='logout'),
     path('abt/',user_views.about,name="about"),
     path('profile/',user_views.profile_page,name='profile_page')
@@ -35,3 +36,11 @@ from django.conf.urls.static import static
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
+#path('login/',authentication_views.LoginView.as_view(template_name='users/login.html'),name='login_page'),    
+
+
+
