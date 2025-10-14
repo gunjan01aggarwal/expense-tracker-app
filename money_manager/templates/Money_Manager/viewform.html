@@ -1,0 +1,46 @@
+{% extends "Money_Manager/base.html" %}
+{% block body %}
+<br/>
+<br/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" style="background-color: #24105a; color:#818181;">
+                    <h4 class="card-title">Detail expense Information</h4>
+                </div>
+            
+                <div class="card-body"> 
+                    <form action="{% url 'money_manager:view' expense_.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="container">
+                        <table class="table border border-3 border-dark">
+                            <tbody>
+                                <tr>
+                                    <td class="table-secondary">Date:</td>
+                                    <td class="p-3 mb-2 bg-light text-dark">{{expense_.date}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-secondary">Category:</td>
+                                    <td class="p-3 mb-2 bg-light text-dark">{{expense_.category}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-secondary">Description:</td>
+                                    <td class="p-3 mb-2 bg-light text-dark">{{expense_.description}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="table-secondary">Amount:</td>
+                                    <td class="p-3 mb-2 bg-light text-dark">{{expense_.amount}}</td>
+                                </tr>   
+                            </tbody>
+                        </table>
+                    </div>
+                    </form>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
