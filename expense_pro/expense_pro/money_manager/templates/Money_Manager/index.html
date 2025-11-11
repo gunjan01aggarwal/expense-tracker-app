@@ -1,0 +1,93 @@
+{% extends 'Money_Manager/base.html' %}
+{% block body %}
+    <br/>
+    <p> Hello {{user.first_name}} {{user.last_name}},Welcome to expense tracker!!</p>
+    <div class="container">
+            <br/>   
+            <form method="GET">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="description" placeholder="Search by description" name="description" value="{{ description }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-30" style="background-color:#24105a;
+                            border-color: #24105a; color:#818181;">Search</button>
+                    </div>
+                </div>    
+            </form>
+            <br/>
+            <div class="row justify-content-center">
+                <div class="col-md-6 offset-md-3">
+                    <a href="{% url 'money_manager:add' %}" class="btn btn-primary w-30" 
+                    style="background-color: #24105a; border-color: #24105a;"> ADD EXPENSES</a>
+                </div>
+                <br/>
+                <br/>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr class="table-primary">
+                            <th>S.No</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td> {{ expense.serial_number }}</td>
+                            <td> {{expense.date}}</td>
+                            <td> {{expense.category}} </td>
+                            <td> {{expense.description}} </td>
+                            <td> {{expense.amount}}</td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="{% url 'money_manager:view' expense.id %}" class="btn btn-success btn-sm action-btn" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    <a href="{% url 'money_manager:edit' expense.id %}" class="btn btn-warning btn-sm action-btn" title="Edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+
+                                    <a href="{% url 'money_manager:delete' expense.id %}" class="btn btn-danger btn-sm action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>          
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>        
+                </table>
+            </div>    
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div style="border-color:black;" class="pagination-box d-flex align-items-center gap-2 p-2 border rounded">
+                    {% if expenses.has_previous %}
+                        <a style="background-color:#24105a;color:#818181;" 
+                        class="page-link btn btn-sm" 
+                        href="?page={{ expenses.previous_page_number }}{% if description %}&description={{ description }}{% endif %}" tabindex="-1">
+                        <i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+
+                    <span class="page-info"> {{ expenses.number }} </span>
+
+
+                    {% if expenses.has_next %}
+                        <a style="background-color:#24105a;color:#818181;" 
+                        class="page-link btn btn-sm" 
+                        href="?page={{ expenses.next_page_number }}{% if description %}&description={{ description }}{% endif %}">
+                         <i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+
+{% endblock %}

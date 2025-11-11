@@ -1,0 +1,176 @@
+body{
+    background-color:#7b7dd6;   
+}
+body{
+    font-family: "Lato", sans-serif;
+}
+body{
+    .sidenav {
+        height: 100%;
+        width: 160px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #24105a;
+        display: flex;
+        flex-direction: column;
+    } 
+    /* Limit the menu (links) to half of the sidenav */
+    .sidenav .menu {
+        height: 50%; /* Uses half of the sidebar */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Align links at the top */
+        width: 100%;
+    }  
+
+    .sidenav .menu a i {
+        font-size: 22px; /* Increase icon size */
+        margin-right: 10px; /* Add space between icon and text */
+    }
+    .sidenav .menu a:hover {
+        background-color: #3b1a89;
+        transform: scale(1.05); /* Slight zoom effect */
+    }
+    
+    .sidenav .menu a:hover i {
+        color:greenyellow; /* Gold color on hover */
+    }
+      
+    .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 25px;
+        color:white;      
+        display: block;
+    }
+    
+      
+    .sidenav a:hover {
+        color: greenyellow;
+    }
+
+    .menu-button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    padding: 6px 8px 6px 16px;
+    color: white;
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    }
+
+    .menu-button:hover {
+    background-color: #3b1a89;
+    transform: scale(1.05);
+    color: greenyellow;
+    }
+
+    .menu-button:hover i {
+    color: greenyellow;
+    }
+
+    .sidenav .bottom-text {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    .sidenav .bottom-text h6{
+        color:darkgreen;
+        font-size: 20px;
+        text-decoration: solid;
+        bottom: 0;
+        left: 5px;
+        padding: 10px;
+        display: flex;
+    }
+      
+    .main {
+        margin-left: 160px; /* Same as the width of the sidenav */
+        font-size: 28px; /* Increased text to enable scrolling */
+        padding: 0px 10px;
+    }
+      
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+}
+body{
+    .action-icons{
+        display: flex;
+        flex-direction: column;  /* Stack icons vertically */
+        align-items: center;     /* Center align icons horizontally */
+        gap: 5px;                /* Space between icons */
+    }
+    .action-btn{
+        padding: 2px 4px;  /* Reduce padding to shrink button size */
+        font-size: 20px;   /* Reduce icon size */
+        margin-right: 3px; /* Reduce space between buttons */
+        width: auto;       /* Ensure button width fits content */
+        height: auto;      /* Adjust height to fit the icon */
+        line-height: 1;    /* Align icons vertically */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    
+    .action-btn:hover::after {
+        content: attr(title);  /* Show the title attribute on hover */
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #000;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 12px;
+        opacity: 0.9;
+        z-index: 10;
+    }
+    
+}
+body{/* Apply rounded corners and thicker borders to the table */
+    table {
+        border-collapse: separate;  /* Allows rounded corners */
+        border-spacing: 0;          /* No gaps between cells */
+        border: 3px solid #24105a;  /* Thicker outer border */
+        border-radius: 15px;        /* Rounded corners */
+        width: 100%;                /* Full width table */
+        overflow: hidden;           /* Ensures content doesn't overflow rounded corners */
+    }
+    
+    /* Apply borders to table cells */
+    table th, table td {
+        border: 2px solid #24105a;  /* Thicker inner borders */
+        padding: 10px;              /* Padding inside cells */
+        text-align: center;         /* Center align text */
+    }
+    
+    /* Optional: Add background colors for better contrast */
+    table thead {
+        background-color:#24105a;
+        color:white;
+    }
+    
+    table tbody tr:nth-child(odd) {
+        background-color:#f2f2f2;  /* Light grey for odd rows */
+    }
+    
+    table tbody tr:nth-child(even) {
+        background-color:#ffffff;  /* White for even rows */
+    }
+}
+
+
+
+
+  
