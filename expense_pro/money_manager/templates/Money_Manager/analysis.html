@@ -1,0 +1,80 @@
+{% extends 'Money_Manager/base.html' %}
+{% load static %}
+{% block body %}
+    </br>
+    </br>
+    <div class="container my-5">
+        <h1 class="text-center">ANALYSIS</h1> 
+        </br> 
+        <h4 class="text-center" style="background-color: {{color}};"> {{ message }}</h4>
+        <div class="row mb-4">
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card dashboard-card p-3">
+                        <div class="p-3" style="background-color:rgb(164, 127, 189); border-radius: 10px;">
+                            <h5 class="card-title text-center"> TODAY </h5>
+                            {{daily_exp}}
+                        </div>
+                    </div>    
+                </div>
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="card dashboard-card p-3">
+                        <div class="p-3" style="background-color:rgb(228, 172, 223); border-radius: 10px;">
+                            <h5 class="card-title text-center"> YESTERDAY </h5>
+                            {{yesterday_exp}}     
+                        </div>
+                    </div>
+                </div>   
+                <!-- Card 3-->
+                <div class="col-md-4">
+                    <div class="card dashboard-card p-3">
+                        <div class="p-3" style="background-color:rgb(153, 140, 152); border-radius: 10px;">
+                            <h5 class="card-title text-center"> WEEKLY </h5>
+                            {{weekly_exp}}     
+                        </div>
+                    </div>
+                </div>  
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card dashboard-card p-3">
+                    <h5 style="background-color: #7b7dd6; color: black; padding: 10px; border-radius: 5px;"
+                    class="card header">Category wise count of expenses </h5>
+                    <div class="card-body">
+                        <canvas id="myChart1" width="800" height="800" ></canvas>
+                    </div>
+                    {{ chartdata1|json_script:"chartdata1" }}
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script src="{% static 'Money_Manager/js_files/chart1.js' %}"></script>
+                </div>    
+            </div>
+            <div class="col-md-6">
+                <div class="card dashboard-card p-3">
+                    <h5 style="background-color: #7b7dd6; color: black; padding: 10px; border-radius: 5px;"
+                    class="card header">Category wise amount of expenses </h5>
+                    <div class="card-body">
+                        <canvas id="myChart2" width="800" height="400" ></canvas>
+                    </div>
+                    {{ chartdata2|json_script:"chartdata2" }}
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script src="{% static 'Money_Manager/js_files/chart2.js' %}"></script>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card dashboard-card p-3">
+                    <h5 style="background-color: #7b7dd6; color: black; padding: 10px; border-radius: 5px;"
+                    class="card header">Monthly Wise Expenses</h5>
+                    <div class="card-body">
+                        <canvas id="myChart3" width="800" height="400" ></canvas>
+                    </div>
+                    {{ chartdata3|json_script:"chartdata3" }}
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script src="{% static 'Money_Manager/js_files/chart3.js' %}"></script>
+                </div>    
+            </div>
+        </div>    
+    </div>                                  
+{% endblock %}

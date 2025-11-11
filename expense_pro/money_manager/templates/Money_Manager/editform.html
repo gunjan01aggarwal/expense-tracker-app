@@ -1,0 +1,47 @@
+{% extends 'Money_Manager/base.html' %}
+{% block body %}
+
+<br/>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div style="background-color:#24105a; color: #818181;" class="card-header">
+                        <h4 class="card-title">ADD EXPENSES</h4>
+                    </div>
+                    <div class="card-body" style="height: 500px; overflow-y: auto;">  <!-- Added height and scrollbar -->
+                    <form action="{% url 'money_manager:edit' expense_.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date:</label>
+                        <input type="datetime-local" class="form-control" value="{{ expense_.date|date:'Y-m-d\\TH:i' }}" id="date" placeholder="Enter date" name="date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category:</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="Entertainment" {% if expense_.category == "Entertainment" %} SELECTED {% endif %}>Entertainment</option>
+                            <option value="Shopping" {% if expense_.category == "Shopping" %} SELECTED {% endif %}>Shopping</option>
+                            <option value="Food" {% if expense_.category == "Food" %} SELECTED {% endif %}>Food</option>
+                            <option value="Travel" {% if expense_.category == "Travel" %} SELECTED {% endif %}>Travel</option>
+                            <option value="Education" {% if expense_.category == "Education" %} SELECTED {% endif %}>Education</option>
+                            <option value="Hospital" {% if expense_.category == "Hospital" %} SELECTED {% endif %}>Hospital</option>
+                            <option value="Others" {% if expense_.category == "Others" %} SELECTED {% endif %}>Others</option>
+                            <option value="Necessities" {% if expense_.category == "Necessities" %} SELECTED {% endif %}>Necessities</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea type="text" class="form-control" id="description" placeholder="Enter description" name="description"> {{expense_.description}} </textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount:</label>
+                        <input type="number" class="form-control" value={{expense_.amount}} id="amount" placeholder="Enter amount" name="amount">
+                    </div> 
+                    <button style="background-color:#24105a; color: #818181;" type="submit" class="btn btn-dark w-100">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>            
+
+{% endblock %}
